@@ -31,6 +31,11 @@ while if_run === true
     puts "____CURRENT LIST____"
   when "3\n"
     puts "Enter index of item to edit"
+    print_todo(todolist)
+    editId = gets.to_i
+    puts "Enter a new entry"
+    newvalue = gets
+    todolist.map! { |v| v === todolist[editId] ? newvalue : v }
   when "4\n"
     puts "Enter index of item to remove"
     print_todo(todolist)
@@ -42,13 +47,3 @@ while if_run === true
     puts "invalid entry"
   end
 end
-
-# checker = true
-# while checker === true
-#   user_input = gets
-#   if  user_input == "quit\n"
-#     checker = false
-#   else
-#     infoArr << user_input
-#   end
-# end
