@@ -8,24 +8,39 @@ def print_menu
   end
 end
 
-print_menu
+def print_todo(todolist)
+  menucount = 0
+  while menucount < todolist.length
+    puts menucount.to_s + ': ' + todolist[menucount]
+    menucount += 1
+  end
+end
 
-choice = gets
-case choice
-when "1\n"
-  puts 'Enter an item to add to the list'
-  todolist << gets
-when "2\n"
-  puts 'Try harder!'
-when "3\n"
-  puts 'You need help!!!'
-when "4\n"
-  puts 'You need help!!!'
-when "5\n"
-  puts 'You need help!!!'
-else
-  puts "invalid entry"
+if_run = true
 
+while if_run === true
+  print_menu
+  choice = gets
+  case choice
+  when "1\n"
+    puts 'Enter an item to add to the list'
+    todolist << gets
+  when "2\n"
+    puts "____CURRENT LIST____"
+    puts todolist
+    puts "____CURRENT LIST____"
+  when "3\n"
+    puts "Enter index of item to edit"
+  when "4\n"
+    puts "Enter index of item to remove"
+    print_todo(todolist)
+    removeId = gets.to_i
+    todolist.delete_at(removeId)
+  when "5\n"
+    if_run = false
+  else
+    puts "invalid entry"
+  end
 end
 
 # checker = true
