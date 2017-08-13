@@ -1,4 +1,3 @@
-greeting = 'hello'
-name = "world"
-puts "hello #{name}"
-puts "#{greeting} #{name}"
+a = gets.to_i
+
+puts a
