@@ -12,7 +12,7 @@ end
 
 
 checker = true
-while checker === true
+until checker === false
   print_menu
   choice = gets
   case choice
@@ -39,7 +39,17 @@ while checker === true
   when "2\n"
     puts contacts
   when "3\n"
-
+    contacts.each_with_index do |c, i|
+      puts "#{i}: #{c}"
+    end
+    id = gets.to_i
+    contacts[id].each do |att, info| 
+      puts "Please enter new value for #{att}"
+      new_val = gets
+      if new_val != "\n"
+        contacts[id][att] = new_val
+      end
+    end
   when "4\n"
     checker = false
   else
