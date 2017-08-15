@@ -11,13 +11,16 @@ class User
  end
 
  def buy_item(name, price)
-   @wallet_amt -= price
-   if @cart.any? { |item| item[:name] === name}
-     @cart.each{ |item| item[:qty] += 1 if item[:name] === name }
+   if @wallet_amt >= price
+     @wallet_amt -= price
+     if @cart.any? { |item| item[:name] === name}
+       @cart.each{ |item| item[:qty] += 1 if item[:name] === name }
+     else
+       @cart << { name: name, qty: 1}
+     end
    else
-     @cart << { name: name, qty: 1}
+     puts "Do not have enough money"
    end
-   puts @cart
  end
 end
 
@@ -43,7 +46,10 @@ class Store
     end
     item_id = gets.to_i - 1
     item = @inventory[item_id]
-    if item_id >= 0 && item_id < @inventory.length
+    if item[:qty] < 1
+      puts "Insufficient inventory"
+      shop
+    elsif item_id >= 0 && item_id < @inventory.length
       item[:qty] -= 1
       user.buy_item(item[:name], item[:price])
     else
