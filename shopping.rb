@@ -10,6 +10,10 @@ class User
    puts @wallet_amt
  end
 
+ def show_cart
+   puts @cart
+ end
+
  def buy_item(name, price)
    if @wallet_amt >= price
      @wallet_amt -= price
@@ -22,6 +26,31 @@ class User
      puts "Do not have enough money"
    end
  end
+
+ def sell_item(sell_qty, name, price)
+   @wallet_amt += sell_qty * price
+   @cart.each{ |item| item[:qty] -= sell_qty if item[:name] === name }
+ end
+
+ def check_cart_qty(sell_qty, name)
+   if @cart.any? { |item| item[:name] === name}
+     item_qty = 0
+     @cart.map {
+       |item|
+       if item[:name] === name
+         item_qty = item[:qty]
+       end
+     }
+     if item_qty < sell_qty
+       false
+     else
+       true
+     end
+   else
+     false
+   end
+ end
+
 end
 
 class Store
@@ -39,11 +68,37 @@ class Store
     puts @inventory
   end
 
-  def shop
-    puts "what would you like to buy"
+  def inv_list
     @inventory.each_with_index do |item, i|
       puts "#{i+1}: #{item[:name]}"
     end
+  end
+
+  def sell
+    puts "What would you like to sell"
+    inv_list
+    item_id = gets.to_i - 1
+    item = @inventory[item_id]
+    if item_id >= 0 && item_id < @inventory.length
+      puts "How many would you like to sell"
+      sell_qty = gets.to_i
+      if_enough_qty = @user.check_cart_qty(sell_qty, item[:name])
+      if if_enough_qty
+        item[:qty] += sell_qty
+        @user.sell_item(sell_qty, item[:name], item[:price])
+        puts "Items sold"
+      else
+        puts "Do not have enough quantiy to sell"
+      end
+    else
+      puts "Invalid Option"
+      sell
+    end
+  end
+
+  def shop
+    puts "what would you like to buy"
+    inv_list
     item_id = gets.to_i - 1
     item = @inventory[item_id]
     if item[:qty] < 1
@@ -130,7 +185,7 @@ class App
     when 1
       @store.shop
     when 2
-
+      @store.sell
     when 3
       @store.show_inventory
     when 4
