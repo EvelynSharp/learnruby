@@ -75,24 +75,28 @@ class Store
   end
 
   def sell
-    puts "What would you like to sell"
-    inv_list
-    item_id = gets.to_i - 1
-    item = @inventory[item_id]
-    if item_id >= 0 && item_id < @inventory.length
-      puts "How many would you like to sell"
-      sell_qty = gets.to_i
-      if_enough_qty = @user.check_cart_qty(sell_qty, item[:name])
-      if if_enough_qty
-        item[:qty] += sell_qty
-        @user.sell_item(sell_qty, item[:name], item[:price])
-        puts "Items sold"
+    if @user.cart.any?
+      puts "What would you like to sell"
+      inv_list
+      item_id = gets.to_i - 1
+      item = @inventory[item_id]
+      if item_id >= 0 && item_id < @inventory.length
+        puts "How many would you like to sell"
+        sell_qty = gets.to_i
+        if_enough_qty = @user.check_cart_qty(sell_qty, item[:name])
+        if if_enough_qty
+          item[:qty] += sell_qty
+          @user.sell_item(sell_qty, item[:name], item[:price])
+          puts "Items sold"
+        else
+          puts "Do not have enough quantiy to sell"
+        end
       else
-        puts "Do not have enough quantiy to sell"
+        puts "Invalid Option"
+        sell
       end
     else
-      puts "Invalid Option"
-      sell
+      puts "You have nothing to sell"
     end
   end
 
