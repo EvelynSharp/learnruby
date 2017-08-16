@@ -1,16 +1,14 @@
-class App
-  attr_accessor :user, :store, :menu
-
-  def initialize
-    puts "Please enter users name:"
-    name = gets
-    puts "Please enter how much money the user has brought:"
-    wallet_amt = gets.to_f
-    @user = ''
-    @store =''
-    @menu = []
+def testing(target, method)
+  (0..5).each do |x|
+    (0..5).each do |y|
+     puts x*y
+     if x*y == target
+       break if method == "break"
+       return if method == "return"
+     end
+    end
   end
-
 end
-
-app = App.new
+# 
+# testing(12, "break")
+testing(12, "return")

@@ -57,6 +57,44 @@ class Store
       shop
     end
   end
+
+  def add_item
+    puts "What would you like to do?"
+    puts "1: Add An Item"
+    puts "2: Main Menu"
+
+    choice = gets.to_i
+    if choice === 1
+      puts "Enter Item Name"
+      name = gets.strip
+      if @inventory.any? { |item| item[:name].downcase === name.downcase}
+        puts "Item Already Exist"
+        puts "what would you like to do?"
+        puts "1: add units to existing item"
+        puts "2: main menu"
+        add_choice = gets.to_i
+        case add_choice
+        when 1
+          puts "Enter Quantity to Add"
+          qty = gets.to_i
+          @inventory.each{ |item| item[:qty] += qty if item[:name].downcase === name.downcase }
+        when 2
+        else
+          puts "invalid choice"
+        end
+      else
+        puts "Enter Item Quantity"
+        qty = gets.to_i
+        @inventory << { name: name, qty: qty}
+        puts "Inventory Updated "
+      end
+    elsif choice === 2
+      return
+    else
+      puts "invalid choice"
+    end
+    add_item
+  end
 end
 
 class App
@@ -72,9 +110,11 @@ class App
     @menu = [
       'What would you like to do today:',
       '1: Buy Something',
-      '2: Display store inventory',
-      '3: Display remaining balance',
-      '4: Leave'
+      '2: Sell Something',
+      '3: Display store inventory',
+      '4: Display remaining balance',
+      '5: Add Item to Store',
+      '6: Leave'
     ]
   end
 
@@ -89,17 +129,20 @@ class App
     case choice
     when 1
       @store.shop
-      run_menu
     when 2
-      @store.show_inventory
-      run_menu
+
     when 3
-      @user.show_balance
-      run_menu
+      @store.show_inventory
     when 4
+      @user.show_balance
+    when 5
+      @store.add_item
+    when 6
+      exit
     else
       puts "invalid entry"
     end
+    run_menu
   end
 
 end
