@@ -54,8 +54,9 @@ class User
 end
 
 class Store
-  attr_accessor :inventory, :user
-  def initialize(user)
+  attr_accessor :inventory, :user, :name
+  def initialize(name, user)
+    @name = name
     @user = user
     @inventory = [
       { name: "books", qty: 10, price: 20 },
@@ -164,8 +165,10 @@ class App
     name = gets.strip
     puts "Please enter how much money the user has brought:"
     wallet_amt = gets.to_f
+    puts "What store do you want to shop at"
+    store_name = gets.strip
     @user = User.new(name, wallet_amt)
-    @store = Store.new(@user)
+    @store = Store.new(store_name, @user)
     @menu = [
       'What would you like to do today:',
       '1: Buy Something',
@@ -197,6 +200,7 @@ class App
     when 5
       @store.add_item
     when 6
+      puts "thank you for shopping at #{@store.name}"
       exit
     else
       puts "invalid entry"
